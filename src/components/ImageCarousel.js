@@ -1,47 +1,48 @@
 import React from 'react';
-import Slider from 'react-slick';
-import { Box, CardMedia, Typography } from '@mui/material';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { Box, CardMedia, Typography, IconButton } from '@mui/material';
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-// Imágenes del carrusel
 import carouselImg1 from '../img/banner.jpg';
 import carouselImg2 from '../img/banner2.png';
 
 const images = [carouselImg1, carouselImg2];
 
-const CustomArrow = (props) => {
-    const { className, style, onClick, direction } = props;
-    return (
-        <div
-            className={className}
-            style={{
-                ...style,
-                display: "block",
-                background: "black",
-                borderRadius: "50%",
-                width: "40px",
-                height: "40px",
-                zIndex: 2,
-                ...(direction === "left" ? { left: "-50px" } : { right: "-50px" }),
-            }}
-            onClick={onClick}
-        />
-    );
-};
+const CustomPrevArrow = ({ onClick }) => (
+    <IconButton
+        onClick={onClick}
+        sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '10px',
+            transform: 'translateY(-50%)',
+            background: 'gray',
+            '&:hover': { background: 'darkgray' },
+            zIndex: 1
+        }}
+    >
+        <ArrowBackIcon sx={{ color: 'white', fontSize: '30px' }} />
+    </IconButton>
+);
 
-// Configuración del carrusel
-const settings = {
-    dots: false, 
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    prevArrow: <CustomArrow direction="left" />,
-    nextArrow: <CustomArrow direction="right" />,
-};
+const CustomNextArrow = ({ onClick }) => (
+    <IconButton
+        onClick={onClick}
+        sx={{
+            position: 'absolute',
+            top: '50%',
+            right: '10px',
+            transform: 'translateY(-50%)',
+            background: 'gray',
+            '&:hover': { background: 'darkgray' },
+            zIndex: 1
+        }}
+    >
+        <ArrowForwardIcon sx={{ color: 'white', fontSize: '30px' }} />
+    </IconButton>
+);
 
 const ImageCarousel = () => {
     return (
@@ -49,7 +50,21 @@ const ImageCarousel = () => {
             <Typography variant="h6" color="black" fontWeight="900" sx={{ mb: 3 }}>
                 Ofertas y Promociones
             </Typography>
-            <Slider {...settings}>
+            <Carousel
+                showArrows={true}
+                renderArrowPrev={(onClickHandler, hasPrev, label) =>
+                    hasPrev && <CustomPrevArrow onClick={onClickHandler} />
+                }
+                renderArrowNext={(onClickHandler, hasNext, label) =>
+                    hasNext && <CustomNextArrow onClick={onClickHandler} />
+                }
+                showThumbs={false}
+                infiniteLoop={true}
+                autoPlay={true}
+                interval={3000}
+                stopOnHover={true}
+                showStatus={false}
+            >
                 {images.map((image, index) => (
                     <CardMedia
                         key={index}
@@ -59,7 +74,7 @@ const ImageCarousel = () => {
                         sx={{ height: "auto", objectFit: "contain", borderRadius: "20px" }}
                     />
                 ))}
-            </Slider>
+            </Carousel>
         </Box>
     );
 };
