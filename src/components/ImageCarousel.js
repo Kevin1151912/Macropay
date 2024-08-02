@@ -3,40 +3,36 @@ import Slider from 'react-slick';
 import { Box, CardMedia, Typography } from '@mui/material';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
+// Imágenes del carrusel
 import carouselImg1 from '../img/banner.jpg';
 import carouselImg2 from '../img/banner2.png';
 
 const images = [carouselImg1, carouselImg2];
 
-const CustomArrow = ({ className, style, onClick, direction }) => {
+const CustomArrow = (props) => {
+    const { className, style, onClick, direction } = props;
     return (
         <div
             className={className}
             style={{
                 ...style,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "gray ",
+                display: "block",
+                background: "black",
                 borderRadius: "50%",
-                width: "60px",
-                height: "60px",
+                width: "40px",
+                height: "40px",
                 zIndex: 2,
-                ...(direction === "left" ? { left: "-30px" } : { right: "-30px" }),
+                ...(direction === "left" ? { left: "-50px" } : { right: "-50px" }),
             }}
             onClick={onClick}
-        >
-            {direction === "left" ? <ArrowBackIcon sx={{ color: "white", fontSize: "30px" }} /> : <ArrowForwardIcon sx={{ color: "white", fontSize: "50px" }} />}
-        </div>
+        />
     );
 };
 
 // Configuración del carrusel
 const settings = {
-    dots: false,
+    dots: false, 
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -58,8 +54,9 @@ const ImageCarousel = () => {
                     <CardMedia
                         key={index}
                         component="img"
+                        alt={`Slide ${index + 1}`}
                         image={image}
-                        sx={{ height: "auto", objectFit: "fill", borderRadius: "20px" }}
+                        sx={{ height: "auto", objectFit: "contain", borderRadius: "20px" }}
                     />
                 ))}
             </Slider>
