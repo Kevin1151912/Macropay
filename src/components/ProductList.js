@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarRating from "./StarRating";
-import ImageCarousel from './ImageCarousel';
+// import ImageCarousel from './ImageCarousel';
 import img1 from "../img/img1.jpg";
 import img2 from "../img/img2.jpg";
 import img3 from "../img/img3.png";
@@ -223,7 +223,7 @@ const ProductList = () => {
     });
 
     return (
-        <><Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}>
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}>
             <Box
                 component="div"
                 sx={{
@@ -439,9 +439,9 @@ const ProductList = () => {
                         </Grid>
                     ))}
                 </Grid>
-
+                {/* <ImageCarousel /> */}
             </Box>
-        </Box><ImageCarousel /></>
+        </Box>
     );
 
 };
