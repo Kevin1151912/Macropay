@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarRating from "./StarRating";
-import ImageCarousel from './ImageCarousel';
 import img1 from "../img/img1.jpg";
 import img2 from "../img/img2.jpg";
 import img3 from "../img/img3.png";
@@ -223,7 +222,7 @@ const ProductList = () => {
     });
 
     return (
-        <><Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}>
+        <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}>
             <Box
                 component="div"
                 sx={{
@@ -355,9 +354,6 @@ const ProductList = () => {
 
                 {/* Filtro de cámara */}
                 <Typography variant="h8" color="#0347B6" fontWeight="bolder">Cámara</Typography>
-
-
-
             </Box>
             <Box component="main" sx={{ flexGrow: 1, padding: "20px" }}>
                 <Grid container spacing={3}>
@@ -440,7 +436,7 @@ const ProductList = () => {
                     ))}
                 </Grid>
             </Box>
-        </Box><ImageCarousel /></>
+        </Box>
     );
 
 };

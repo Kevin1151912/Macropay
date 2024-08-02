@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 const FooterWithReversedWave = () => {
   return (
     <Box sx={{ position: 'relative', overflow: 'hidden' }}>
-      {/* SVG de la ola */}
       <Box
         component="svg"
         xmlns="http://www.w3.org/2000/svg"
@@ -31,12 +30,11 @@ const FooterWithReversedWave = () => {
         </g>
         <defs>
           <linearGradient id="paint0_linear_36_429" x1="720" y1="41" x2="720" y2="514" gradientUnits="userSpaceOnUse">
-            <stop offset="100%" stopColor="#FFD300"></stop> {/* Amarillo al principio */}
-            <stop offset="100%" stopColor="#0347B6"></stop> {/* Azul oscuro al final */}
+            <stop offset="100%" stopColor="#FFD300"></stop>
+            <stop offset="100%" stopColor="#0347B6"></stop> 
           </linearGradient>
         </defs>
       </Box>
-      {/* Caja azul debajo del SVG */}
       <Box
         sx={{
           height: '400px', 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Navbar from './components/Navbar'; // Importa el nuevo componente
+import Navbar from './components/Navbar'; 
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import Footer from './components/Footer';
