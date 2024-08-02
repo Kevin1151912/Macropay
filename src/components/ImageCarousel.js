@@ -24,7 +24,7 @@ const CustomArrow = ({ className, style, onClick, direction }) => {
                 borderRadius: "50%",
                 width: "60px",
                 height: "60px",
-                zIndex: 1,
+                zIndex: 2,
                 ...(direction === "left" ? { left: "-30px" } : { right: "-30px" }),
             }}
             onClick={onClick}
@@ -58,9 +58,8 @@ const ImageCarousel = () => {
                     <CardMedia
                         key={index}
                         component="img"
-                        alt={`Slide ${index + 1}`}
                         image={image}
-                        sx={{ height: "auto", objectFit: "contain", borderRadius: "20px" }}
+                        sx={{ height: "auto", objectFit: "fill", borderRadius: "20px" }}
                     />
                 ))}
             </Slider>
