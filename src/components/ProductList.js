@@ -1,173 +1,4 @@
-// import React, { useState } from 'react';
-// import {
-//     Grid,
-//     TextField,
-//     Checkbox,
-//     FormControlLabel,
-//     Button,
-//     Card,
-//     CardContent,
-//     CardMedia,
-//     Typography,
-//     FormGroup,
-//     FormControl,
-//     InputLabel,
-//     Select,
-//     MenuItem,
-//     IconButton,
-//     Chip,
-//     Box
-// } from '@mui/material';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
-// import img1 from '../img/img1.jpg';
-// import img2 from '../img/img2.jpg';
-// import img3 from '../img/img3.png';
-
-// const products = [
-//     { id: 1, name: 'Product 1', brand: 'Brand A', price: 100, reviews: 5, favorite: false, description: 'Description 1', image: img1 },
-//     { id: 2, name: 'Product 2', brand: 'Brand B', price: 200, reviews: 4, favorite: false, description: 'Description 2', image: img2 },
-//     { id: 3, name: 'Product 3', brand: 'Brand A', price: 150, reviews: 3, favorite: false, description: 'Description 3', image: img3 },
-//     { id: 4, name: 'Product 4', brand: 'Brand C', price: 250, reviews: 4, favorite: false, description: 'Description 4', image: img1 }
-// ];
-
-// const ProductList = () => {
-//     const [filter, setFilter] = useState({ brand: [], price: '', reviews: '', favorites: false });
-//     const [search, setSearch] = useState('');
-//     const [favorites, setFavorites] = useState([]);
-
-//     const handleFilterChange = (e) => {
-//         const { name, value, type, checked } = e.target;
-//         if (name === 'brand') {
-//             setFilter(prevFilter => ({
-//                 ...prevFilter,
-//                 [name]: typeof value === 'string' ? value.split(',') : value
-//             }));
-//         } else {
-//             setFilter({
-//                 ...filter,
-//                 [name]: type === 'checkbox' ? checked : value,
-//             });
-//         }
-//     };
-
-//     const handleFavorite = (productId) => {
-//         setFavorites(prevFavorites =>
-//             prevFavorites.includes(productId)
-//                 ? prevFavorites.filter(id => id !== productId)
-//                 : [...prevFavorites, productId]
-//         );
-//     };
-
-//     const filteredProducts = products.filter(product => {
-//         return (
-//             (filter.brand.length === 0 || filter.brand.includes(product.brand)) &&
-//             (!filter.price || product.price <= filter.price) &&
-//             (!filter.reviews || product.reviews >= filter.reviews) &&
-//             (!filter.favorites || favorites.includes(product.id)) &&
-//             (!search || product.name.toLowerCase().includes(search.toLowerCase()))
-//         );
-//     });
-
-//     return (
-//         <div>
-//             <div>
-//                 <TextField
-//                     label="Buscar"
-//                     variant="outlined"
-//                     fullWidth
-//                     value={search}
-//                     onChange={(e) => setSearch(e.target.value)}
-//                 />
-//                 <FormGroup row>
-//                     <FormControl variant="outlined" style={{ minWidth: 120, margin: '10px' }}>
-//                         <InputLabel>Marca</InputLabel>
-//                         <Select
-//                             multiple
-//                             name="brand"
-//                             value={filter.brand}
-//                             onChange={handleFilterChange}
-//                             renderValue={(selected) => (
-//                                 <div>
-//                                     {selected.map((value) => (
-//                                         <Chip key={value} label={value} />
-//                                     ))}
-//                                 </div>
-//                             )}
-//                             label="Marca"
-//                         >
-//                             <MenuItem value="Brand A">Brand A</MenuItem>
-//                             <MenuItem value="Brand B">Brand B</MenuItem>
-//                             <MenuItem value="Brand C">Brand C</MenuItem>
-//                         </Select>
-//                     </FormControl>
-//                     <FormControl variant="outlined" style={{ minWidth: 120, margin: '10px' }}>
-//                         <InputLabel>Precio</InputLabel>
-//                         <Select name="price" value={filter.price} onChange={handleFilterChange} label="Precio">
-//                             <MenuItem value=""><em>None</em></MenuItem>
-//                             <MenuItem value={100}>Hasta $100</MenuItem>
-//                             <MenuItem value={200}>Hasta $200</MenuItem>
-//                             <MenuItem value={300}>Hasta $300</MenuItem>
-//                         </Select>
-//                     </FormControl>
-//                     <FormControl variant="outlined" style={{ minWidth: 120, margin: '10px' }}>
-//                         <InputLabel>Reviews</InputLabel>
-//                         <Select name="reviews" value={filter.reviews} onChange={handleFilterChange} label="Reviews">
-//                             <MenuItem value=""><em>None</em></MenuItem>
-//                             <MenuItem value={3}>3 estrellas o más</MenuItem>
-//                             <MenuItem value={4}>4 estrellas o más</MenuItem>
-//                             <MenuItem value={5}>5 estrellas</MenuItem>
-//                         </Select>
-//                     </FormControl>
-//                     <FormControlLabel
-//                         control={<Checkbox name="favorites" checked={filter.favorites} onChange={handleFilterChange} />}
-//                         label="Mostrar solo favoritos"
-//                     />
-//                 </FormGroup>
-//             </div>
-//             <Grid container spacing={1}>
-//                 {filteredProducts.map(product => (
-//                     <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-//                         <Card style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-//                             <CardMedia
-//                                 component="img"
-//                                 alt={product.name}
-//                                 height="300"
-//                                 image={product.image}
-//                                 title={product.name}
-//                                 style={{ objectFit: 'contain' }}
-//                             />
-//                             <CardContent>
-//                                 <Typography gutterBottom variant="h5" component="h2">
-//                                     {product.name}
-//                                 </Typography>
-//                                 <Typography variant="body2" color="textSecondary" component="p" style={{ marginBottom: '10px' }}>
-//                                     {product.description}
-//                                 </Typography>
-//                                 <Box display="flex" justifyContent="space-between" alignItems="center">
-//                                     <Typography variant="h6" color="primary">
-//                                         ${product.price}
-//                                     </Typography>
-//                                     <Box display="flex" alignItems="center">
-//                                         <IconButton onClick={() => handleFavorite(product.id)}>
-//                                             <FavoriteIcon color={favorites.includes(product.id) ? 'error' : 'disabled'} />
-//                                         </IconButton>
-//                                         <Button size="small" color="primary" variant="contained">
-//                                             Lo Quiero
-//                                         </Button>
-//                                     </Box>
-//                                 </Box>
-//                             </CardContent>
-//                         </Card>
-//                     </Grid>
-//                 ))}
-//             </Grid>
-//         </div>
-//     );
-// };
-
-// export default ProductList;
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
     Grid,
     TextField,
@@ -179,82 +10,228 @@ import {
     CardMedia,
     Typography,
     FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Chip,
     Box,
-    IconButton
-} from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import StarRating from './StarRating';
-import img1 from '../img/img1.jpg';
-import img2 from '../img/img2.jpg';
-import img3 from '../img/img3.png';
+    IconButton,
+    Divider
+} from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import StarRating from "./StarRating";
+import ImageCarousel from './ImageCarousel';
+import img1 from "../img/img1.jpg";
+import img2 from "../img/img2.jpg";
+import img3 from "../img/img3.png";
+import img4 from "../img/img4.jpg";
+import img5 from "../img/img5.png";
+import img6 from "../img/img6.jpg";
+import img7 from "../img/img7.webp";
+import img8 from "../img/img8.jpg";
+import img9 from "../img/img9.png";
+import img10 from "../img/img10.png";
+import img11 from "../img/img11.webp";
+import img12 from "../img/img12.webp";
+
+const calculatePayments = (price) => {
+    const weeklyPayment = (price / 12 / 4).toFixed(2);
+    const monthlyPayment = (price / 12).toFixed(2);
+    return { weeklyPayment, monthlyPayment };
+};
 
 const products = [
-    { id: 1, name: 'Product 1', brand: 'Brand A', price: 100, reviews: 5, favorite: false, description: 'Description 1', image: img1 },
-    { id: 2, name: 'Product 2', brand: 'Brand B', price: 200, reviews: 4, favorite: false, description: 'Description 2', image: img2 },
-    { id: 3, name: 'Product 3', brand: 'Brand A', price: 150, reviews: 3, favorite: false, description: 'Description 3', image: img3 },
-    { id: 4, name: 'Product 4', brand: 'Brand C', price: 250, reviews: 4, favorite: false, description: 'Description 4', image: img1 }
+    {
+        id: 1,
+        name: "iPhone 13",
+        brand: "Apple",
+        price: 100,
+        reviews: 5,
+        favorite: false,
+        description: `$${calculatePayments(100).weeklyPayment} p/semana\n$${calculatePayments(100).monthlyPayment} p/mes`,
+        image: img1,
+    },
+    {
+        id: 2,
+        name: "Samsung Galaxy S21",
+        brand: "Samsung",
+        price: 200,
+        reviews: 4,
+        favorite: false,
+        description: `$${calculatePayments(200).weeklyPayment} p/semana\n$${calculatePayments(200).monthlyPayment} p/mes`,
+        image: img2,
+    },
+    {
+        id: 3,
+        name: "Google Pixel 6",
+        brand: "Google",
+        price: 150,
+        reviews: 3,
+        favorite: false,
+        description: `$${calculatePayments(150).weeklyPayment} p/semana\n$${calculatePayments(150).monthlyPayment} p/mes`,
+        image: img3,
+    },
+    {
+        id: 4,
+        name: "OnePlus 9",
+        brand: "OnePlus",
+        price: 250,
+        reviews: 4,
+        favorite: false,
+        description: `$${calculatePayments(250).weeklyPayment} p/semana\n$${calculatePayments(250).monthlyPayment} p/mes`,
+        image: img4,
+    },
+    {
+        id: 5,
+        name: "Xiaomi Mi 11",
+        brand: "Xiaomi",
+        price: 350,
+        reviews: 2,
+        favorite: false,
+        description: `$${calculatePayments(350).weeklyPayment} p/semana\n$${calculatePayments(350).monthlyPayment} p/mes`,
+        image: img5,
+    },
+    {
+        id: 6,
+        name: "Sony Xperia 1 III",
+        brand: "Sony",
+        price: 250,
+        reviews: 1,
+        favorite: false,
+        description: `$${calculatePayments(250).weeklyPayment} p/semana\n$${calculatePayments(250).monthlyPayment} p/mes`,
+        image: img6,
+    },
+    {
+        id: 7,
+        name: "Oppo Find X3 Pro",
+        brand: "Oppo",
+        price: 180,
+        reviews: 2,
+        favorite: false,
+        description: `$${calculatePayments(180).weeklyPayment} p/semana\n$${calculatePayments(180).monthlyPayment} p/mes`,
+        image: img7,
+    },
+    {
+        id: 8,
+        name: "Vivo X60 Pro",
+        brand: "Vivo",
+        price: 100,
+        reviews: 3,
+        favorite: false,
+        description: `$${calculatePayments(100).weeklyPayment} p/semana\n$${calculatePayments(100).monthlyPayment} p/mes`,
+        image: img8,
+    },
+    {
+        id: 9,
+        name: "Realme GT",
+        brand: "Realme",
+        price: 210,
+        reviews: 3,
+        favorite: false,
+        description: `$${calculatePayments(210).weeklyPayment} p/semana\n$${calculatePayments(210).monthlyPayment} p/mes`,
+        image: img9,
+    },
+    {
+        id: 10,
+        name: "Motorola Edge 20",
+        brand: "Motorola",
+        price: 230,
+        reviews: 4,
+        favorite: false,
+        description: `$${calculatePayments(230).weeklyPayment} p/semana\n$${calculatePayments(230).monthlyPayment} p/mes`,
+        image: img10,
+    },
+    {
+        id: 11,
+        name: "Nokia 8.3 5G",
+        brand: "Nokia",
+        price: 280,
+        reviews: 4,
+        favorite: false,
+        description: `$${calculatePayments(280).weeklyPayment} p/semana\n$${calculatePayments(280).monthlyPayment} p/mes`,
+        image: img11,
+    },
+    {
+        id: 12,
+        name: "Asus ROG Phone 5",
+        brand: "Asus",
+        price: 180,
+        reviews: 5,
+        favorite: false,
+        description: `$${calculatePayments(180).weeklyPayment} p/semana\n$${calculatePayments(180).monthlyPayment} p/mes`,
+        image: img12,
+    },
 ];
 
 const ProductList = () => {
-    const [filter, setFilter] = useState({ brand: [], price: '', reviews: '', favorites: false });
-    const [search, setSearch] = useState('');
-    const [favorites, setFavorites] = useState([]);
+    const [filter, setFilter] = useState({
+        brand: [],
+        minPrice: "",
+        maxPrice: "",
+        reviews: "",
+        favorites: false,
+    });
+    const [search, setSearch] = useState("");
+    const [favorites, setFavorites] = useState(
+        products.filter((product) => product.favorite).map((product) => product.id)
+    );
 
     const handleFilterChange = (e) => {
         const { name, value, type, checked } = e.target;
-        if (name === 'brand') {
-            setFilter(prevFilter => ({
+        if (name === "minPrice" || name === "maxPrice") {
+            setFilter((prevFilter) => ({
                 ...prevFilter,
-                [name]: typeof value === 'string' ? value.split(',') : value
+                [name]: value ? Number(value) : "", // Convertir a número si hay valor
+            }));
+        } else if (name === "brand") {
+            setFilter((prevFilter) => ({
+                ...prevFilter,
+                brand: checked
+                    ? [...prevFilter.brand, value]
+                    : prevFilter.brand.filter((brand) => brand !== value),
             }));
         } else {
             setFilter({
                 ...filter,
-                [name]: type === 'checkbox' ? checked : value,
+                [name]: type === "checkbox" ? checked : value,
             });
         }
     };
 
     const handleRatingChange = (rating) => {
-        setFilter(prevFilter => ({
+        setFilter((prevFilter) => ({
             ...prevFilter,
-            reviews: rating
+            reviews: rating,
         }));
     };
 
-    const handleFavorite = (productId) => {
-        setFavorites(prevFavorites =>
+    const handleFavoriteToggle = (productId) => {
+        setFavorites((prevFavorites) =>
             prevFavorites.includes(productId)
-                ? prevFavorites.filter(id => id !== productId)
+                ? prevFavorites.filter((id) => id !== productId)
                 : [...prevFavorites, productId]
         );
     };
 
-    const filteredProducts = products.filter(product => {
-        return (
-            (filter.brand.length === 0 || filter.brand.includes(product.brand)) &&
-            (!filter.price || product.price <= filter.price) &&
-            (!filter.reviews || product.reviews >= filter.reviews) &&
-            (!filter.favorites || favorites.includes(product.id)) &&
-            (!search || product.name.toLowerCase().includes(search.toLowerCase()))
+    const filteredProducts = products.filter((product) => {
+        const isBrandMatch = filter.brand.length === 0 || filter.brand.includes(product.brand);
+        const isPriceMatch = (
+            (!filter.minPrice || product.price >= filter.minPrice) &&
+            (!filter.maxPrice || product.price <= filter.maxPrice)
         );
+        const isReviewsMatch = !filter.reviews || product.reviews >= filter.reviews;
+        const isFavoriteMatch = !filter.favorites || favorites.includes(product.id);
+        const isSearchMatch = !search || product.name.toLowerCase().includes(search.toLowerCase());
+
+        return isBrandMatch && isPriceMatch && isReviewsMatch && isFavoriteMatch && isSearchMatch;
     });
 
     return (
-        <div style={{ display: 'flex' }}>
+        <><Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}>
             <Box
                 component="div"
                 sx={{
-                    width: '250px',
-                    padding: '20px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '16px',
-                    borderRight: '1px solid #ccc'
+                    width: { xs: "100%", sm: "250px" },
+                    padding: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "16px",
                 }}
             >
                 <TextField
@@ -262,90 +239,198 @@ const ProductList = () => {
                     variant="outlined"
                     fullWidth
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-                <FormControl variant="outlined">
-                    <InputLabel>Marca</InputLabel>
-                    <Select
-                        multiple
-                        name="brand"
-                        value={filter.brand}
-                        onChange={handleFilterChange}
-                        renderValue={(selected) => (
-                            <div>
-                                {selected.map((value) => (
-                                    <Chip key={value} label={value} />
-                                ))}
-                            </div>
-                        )}
-                        label="Marca"
+                    onChange={(e) => setSearch(e.target.value)} />
+
+                <Divider />
+
+                {/* Filtro de marcas con Checkboxes */}
+                <Box sx={{ mb: 2 }}>
+                    <Typography variant="h10" color={'#0347B6'} fontWeight={'bolder'}>Marcas</Typography>
+                    <Box
+                        sx={{
+                            maxHeight: "120px",
+                            overflowY: "auto",
+                            borderRadius: "4px",
+                            padding: "8px",
+                        }}
                     >
-                        <MenuItem value="Brand A">Brand A</MenuItem>
-                        <MenuItem value="Brand B">Brand B</MenuItem>
-                        <MenuItem value="Brand C">Brand C</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl variant="outlined">
-                    <InputLabel>Precio</InputLabel>
-                    <Select name="price" value={filter.price} onChange={handleFilterChange} label="Precio">
-                        <MenuItem value=""><em>None</em></MenuItem>
-                        <MenuItem value={100}>Hasta $100</MenuItem>
-                        <MenuItem value={200}>Hasta $200</MenuItem>
-                        <MenuItem value={300}>Hasta $300</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl variant="standard" sx={{ width: '100%', margin: '16px 0' }}>
-                    <Box sx={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px' }}>
-                        <InputLabel htmlFor="reviews-select" sx={{ gridColumn: '1 / 2' }}>
-                            Reviews
-                        </InputLabel>
-                        <Box sx={{ gridColumn: '2 / 3' }}>
-                            <StarRating
-                                rating={filter.reviews}
-                                onChange={handleRatingChange}
-                            />
+                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                            {["Apple", "Samsung", "Google", "OnePlus", "Xiaomi", "Sony", "Oppo", "Vivo", "Realme", "Motorola", "Nokia", "Asus"].map((brand) => (
+                                <FormControlLabel
+                                    key={brand}
+                                    control={<Checkbox
+                                        name="brand"
+                                        value={brand}
+                                        checked={filter.brand.includes(brand)}
+                                        onChange={handleFilterChange} />}
+                                    label={brand}
+                                    sx={{ margin: "-7px 0" }} />
+                            ))}
                         </Box>
                     </Box>
+                </Box>
+
+                <Divider />
+
+                {/* Filtro de precios */}
+                <FormControl variant="outlined" sx={{ width: "100%", margin: "-7px 0", gap: "12px" }}>
+                    <Typography variant="h10" color="#0347B6" fontWeight="bolder">Precio</Typography>
+                    <Box sx={{ display: "flex", gap: "1px" }}>
+                        <TextField
+                            label="Mínimo"
+                            type="number"
+                            name="minPrice"
+                            value={filter.minPrice || ""}
+                            onChange={handleFilterChange}
+                            variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            sx={{ flex: 1 }} />
+                        <Typography
+                            sx={{
+                                color: "gray",
+                                fontWeight: "bolder",
+                                margin: "auto",
+                            }}
+                        >
+                            -
+                        </Typography>
+                        <TextField
+                            label="Máximo"
+                            type="number"
+                            name="maxPrice"
+                            value={filter.maxPrice || ""}
+                            onChange={handleFilterChange}
+                            variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            sx={{ flex: 1 }} />
+                    </Box>
                 </FormControl>
+
+                <Divider />
+
+                {/* Filtro de reseñas */}
+                <FormControl
+                    variant="standard"
+                    sx={{ width: "100%", margin: "-7px 0" }}
+                >
+                    <Typography variant="h8" color="#0347B6" fontWeight="bolder">Reviews</Typography>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            gap: "2px",
+                            mt: 0.5,
+                        }}
+                    >
+                        <StarRating
+                            rating={filter.reviews}
+                            onChange={handleRatingChange}
+                            sx={{ fontSize: "14px" }} />
+                    </Box>
+                </FormControl>
+
+                <Divider />
+
+                {/* Filtro de favoritos */}
                 <FormControlLabel
-                    control={<Checkbox name="favorites" checked={filter.favorites} onChange={handleFilterChange} />}
-                    label="Mostrar solo favoritos"
-                />
+                    control={<Checkbox
+                        name="favorites"
+                        checked={filter.favorites}
+                        onChange={handleFilterChange}
+                        margin="-7px 0" />}
+                    label="Mostrar solo favoritos" />
+
+                <Divider />
+
+                {/* Filtro de memoria */}
+                <Typography variant="h8" color="#0347B6" fontWeight="bolder">Memoria</Typography>
+
+                {/* Línea divisoria */}
+                <Divider />
+
+                {/* Filtro de rango*/}
+                <Typography variant="h8" color="#0347B6" fontWeight="bolder">Rango</Typography>
+
+                {/* Línea divisoria */}
+                <Divider />
+
+                {/* Filtro de cámara */}
+                <Typography variant="h8" color="#0347B6" fontWeight="bolder">Cámara</Typography>
+
+
+
             </Box>
-            <Box
-                component="main"
-                sx={{ flexGrow: 1, padding: '20px' }}
-            >
+            <Box component="main" sx={{ flexGrow: 1, padding: "20px" }}>
                 <Grid container spacing={3}>
-                    {filteredProducts.map(product => (
+                    {filteredProducts.map((product) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                            <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%', boxShadow: 3, borderRadius: '8px' }}>
-                                <Box sx={{ position: 'relative', height: '70%' }}>
+                            <Card
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    height: "100%",
+                                    boxShadow: 3,
+                                    borderRadius: "8px",
+                                }}
+                            >
+                                <Box sx={{ position: "relative", height: "70%" }}>
                                     <CardMedia
                                         component="img"
                                         alt={product.name}
                                         image={product.image}
                                         title={product.name}
-                                        sx={{ height: '100%', objectFit: 'cover', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
-                                    />
-                                    <Box sx={{ position: 'absolute', top: '8px', right: '8px' , }}>
-                                        <IconButton onClick={() => handleFavorite(product.id) }>
-                                            <FavoriteBorderIcon color={favorites.includes(product.id) ? 'error' : 'disabled'} />
+                                        sx={{
+                                            height: "100%",
+                                            objectFit: "cover",
+                                            borderTopLeftRadius: "8px",
+                                            borderTopRightRadius: "8px",
+                                        }} />
+                                    <Box sx={{ position: "absolute", top: "8px", right: "8px" }}>
+                                        <IconButton onClick={() => handleFavoriteToggle(product.id)}>
+                                            <FavoriteBorderIcon
+                                                color={favorites.includes(product.id) ? "error" : "disabled"} />
                                         </IconButton>
                                     </Box>
                                 </Box>
-                                <CardContent sx={{ flexGrow: 1, backgroundColor: '#FFFFFF' }}>
-                                    <Typography gutterBottom variant="h5" component="h2" sx={{ mb: 1 }}>
+                                <CardContent sx={{ flexGrow: 1, backgroundColor: "#FFFFFF" }}>
+                                    <Typography
+                                        gutterBottom
+                                        variant="h5"
+                                        component="h2"
+                                        sx={{ mb: 1 }}
+                                    >
                                         {product.name}
                                     </Typography>
-                                    <Typography variant="body2" color="textSecondary" component="p" sx={{ mb: 2 }}>
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                        component="p"
+                                        sx={{ mb: 2 }}
+                                    >
                                         {product.description}
                                     </Typography>
-                                    <Box display="flex" justifyContent="space-between" alignItems="center">
-                                        <Typography variant="h6" color="primary" sx={{ fontWeight: 'bold' }}>
+                                    <Box
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <Typography
+                                            variant="h6"
+                                            color="primary"
+                                            sx={{ fontWeight: "bold" }}
+                                        >
                                             ${product.price}
                                         </Typography>
-                                        <Button size="small" color="primary" variant="contained" style={{backgroundColor:'#FFE800', color:'#0347B6', fontWeight:'700'}} sx={{ ml: 1 }}>
+                                        <Button
+                                            size="small"
+                                            color="primary"
+                                            variant="contained"
+                                            style={{
+                                                backgroundColor: "#FFD300",
+                                                color: "#0347B6",
+                                                fontWeight: "700",
+                                            }}
+                                            sx={{ ml: 1 }}
+                                        >
                                             Lo Quiero
                                         </Button>
                                     </Box>
@@ -354,9 +439,13 @@ const ProductList = () => {
                         </Grid>
                     ))}
                 </Grid>
+
             </Box>
-        </div>
+        </Box><ImageCarousel /></>
     );
+
 };
+
+
 
 export default ProductList;
