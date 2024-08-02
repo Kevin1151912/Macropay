@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import StarRating from "./StarRating";
+import ImageCarousel from "./ImageCarousel";
 import img1 from "../img/img1.jpg";
 import img2 from "../img/img2.jpg";
 import img3 from "../img/img3.png";
@@ -221,8 +222,10 @@ const ProductList = () => {
         return isBrandMatch && isPriceMatch && isReviewsMatch && isFavoriteMatch && isSearchMatch;
     });
 
+    const bestSellingProducts = products.filter((product) => product.reviews >= 4);
+
     return (
-        <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}>
+        <><Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" } }}>
             <Box
                 component="div"
                 sx={{
@@ -356,8 +359,115 @@ const ProductList = () => {
                 <Typography variant="h8" color="#0347B6" fontWeight="bolder">Cámara</Typography>
             </Box>
             <Box component="main" sx={{ flexGrow: 1, padding: "20px" }}>
-                <Grid container spacing={3}>
-                    {filteredProducts.map((product) => (
+    <Grid container spacing={3} justifyContent="center">
+        {filteredProducts.map((product) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                <Card
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        height: "100%",
+                        boxShadow: 3,
+                        borderRadius: "15px",
+                        maxWidth: "380px", 
+                        margin: "0 auto",
+                    }}
+                >
+                    <Box sx={{ position: "relative", height: "70%" }}>
+                        <CardMedia
+                            component="img"
+                            alt={product.name}
+                            image={product.image}
+                            title={product.name}
+                            sx={{
+                                height: "100%",
+                                objectFit: "cover",
+                                borderTopLeftRadius: "8px",
+                                borderTopRightRadius: "8px",
+                            }} />
+                        <Box sx={{ position: "absolute", top: "8px", right: "8px" }}>
+                            <IconButton onClick={() => handleFavoriteToggle(product.id)}>
+                                <FavoriteBorderIcon
+                                    color={favorites.includes(product.id) ? "error" : "disabled"} />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                    <CardContent sx={{ flexGrow: 1, backgroundColor: "#FFFFFF" }}>
+                        <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="h2"
+                            sx={{ mb: 1, textAlign: "center" }} 
+                        >
+                            {product.name}
+                        </Typography>
+                        <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                            sx={{ mb: 2, textAlign: "center" }} 
+                        >
+                            {product.description}
+                        </Typography>
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            sx={{ mb: 2 }}
+                        >
+                            <StarRating rating={product.reviews} />
+                        </Box>
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                        >
+                            <Typography
+                                variant="h6"
+                                color="primary"
+                                sx={{ fontWeight: "bold" }}
+                            >
+                                ${product.price}
+                            </Typography>
+                            <Button
+                                size="small"
+                                color="primary"
+                                variant="contained"
+                                style={{
+                                    backgroundColor: "#FFD300",
+                                    color: "#0347B6",
+                                    fontWeight: "700",
+                                }}
+                                sx={{ ml: 1 }}
+                            >
+                                Lo Quiero
+                            </Button>
+                        </Box>
+                    </CardContent>
+                </Card>
+            </Grid>
+        ))}
+    </Grid>
+</Box>
+
+
+        </Box>
+            <ImageCarousel />
+
+            {/* Productos más vendidos */}
+            <Box sx={{ padding: "20px", marginBottom:"20px"}}>
+                <Typography
+                    variant="h6"
+                    color="#0347B6"
+                    fontWeight="900"
+                    mb={2}
+                    align="center" 
+                    marginBottom={"50px"}
+                >
+                    Nuestros Productos Más Vendidos
+                </Typography>
+                <Grid container spacing={3} justifyContent="center"> 
+                    {bestSellingProducts.map((product) => (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
                             <Card
                                 sx={{
@@ -365,7 +475,9 @@ const ProductList = () => {
                                     flexDirection: "column",
                                     height: "100%",
                                     boxShadow: 3,
-                                    borderRadius: "8px",
+                                    borderRadius: "20px",
+                                    maxWidth: "380px", 
+                                    margin: "0 auto",
                                 }}
                             >
                                 <Box sx={{ position: "relative", height: "70%" }}>
@@ -383,7 +495,7 @@ const ProductList = () => {
                                     <Box sx={{ position: "absolute", top: "8px", right: "8px" }}>
                                         <IconButton onClick={() => handleFavoriteToggle(product.id)}>
                                             <FavoriteBorderIcon
-                                                color={favorites.includes(product.id) ? "error" : "disabled"} />
+                                                sx={{ color: favorites.includes(product.id) ? "black" : "action" }} />
                                         </IconButton>
                                     </Box>
                                 </Box>
@@ -392,7 +504,7 @@ const ProductList = () => {
                                         gutterBottom
                                         variant="h5"
                                         component="h2"
-                                        sx={{ mb: 1 }}
+                                        sx={{ mb: 1, textAlign: "center" }} 
                                     >
                                         {product.name}
                                     </Typography>
@@ -400,10 +512,11 @@ const ProductList = () => {
                                         variant="body2"
                                         color="textSecondary"
                                         component="p"
-                                        sx={{ mb: 2 }}
+                                        sx={{ mb: 2, textAlign: "center" }} 
                                     >
                                         {product.description}
                                     </Typography>
+                                    <StarRating rating={product.reviews} />
                                     <Box
                                         display="flex"
                                         justifyContent="space-between"
@@ -436,7 +549,8 @@ const ProductList = () => {
                     ))}
                 </Grid>
             </Box>
-        </Box>
+        </>
+
     );
 
 };
